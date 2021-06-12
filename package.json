@@ -8,7 +8,6 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "open": "concurrently 'watch-http-server' 'open http://localhost:8080/src'",
     "start": "NODE_ENV=development parcel src/index.html --no-hmr --port 8080"
   },
   "author": "Marcin Kuzdowicz",
