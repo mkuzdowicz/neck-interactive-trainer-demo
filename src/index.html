@@ -11,7 +11,7 @@
   <!-- bootstrap -->
   <script src="vendor/js/bootstrap.bundle.min.js" type="text/javascript"></script>
 
-  <!-- tfjs -->
+  <!-- Import TensorFlow.js library -->
   <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@2.0.0/dist/tf.min.js"></script>
 
   <!-- bootstrap -->
@@ -53,7 +53,7 @@
       <button class="btn btn-danger" id="snap-left">Capture left</button>
       <button class="btn btn-danger" id="snap-right">Capture right</button>
     </div>
-  </br>
+    </br>
     <div class="controller d-flex align-items-center justify-content-center">
       <canvas class="webcam-stream" id="left-capture-canvas" width="224" height="224"></canvas>
       &nbsp&nbsp
@@ -67,25 +67,53 @@
       const leftCapCanvas = document.getElementById('left-capture-canvas')
       const rightCapCanvas = document.getElementById('right-capture-canvas')
 
-      let pleayOut;
+      let truncatedMobileNet;
+      let model;
 
-      // Get access to the camera!
-      if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-        // Not adding `{ audio: true }` since we only want video now
+      // Loads mobilenet and returns a model that returns the internal activation
+      // we'll use as input to our classifier model.
+      async function loadTruncatedMobileNet() {
+        const mobilenet = await tf.loadLayersModel(
+          'https://storage.googleapis.com/tfjs-models/tfjs/mobilenet_v1_0.25_224/model.json');
 
-        console.log("navigator.mediaDevices", navigator.mediaDevices)
-        navigator.mediaDevices.getUserMedia({ video: true }).then(function (stream) {
-          //video.src = window.URL.createObjectURL(stream);
-          video.srcObject = stream;
-          pleayOut = video.play();
-        });
+        // Return a model that outputs an internal activation.
+        const layer = mobilenet.getLayer('conv_pw_13_relu');
+        return tf.model({ inputs: mobilenet.inputs, outputs: layer.output });
       }
+
+      function predictWebcam() {
+      }
+
+      function getUserMediaSupported() {
+        return !!(navigator.mediaDevices &&
+          navigator.mediaDevices.getUserMedia);
+      }
+
+      function enableCam() {
+        // Get access to the camera!
+        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+          // Not adding `{ audio: true }` since we only want video now
+
+          console.log("navigator.mediaDevices", navigator.mediaDevices)
+          navigator.mediaDevices.getUserMedia({ video: true }).then(function (stream) {
+            video.srcObject = stream;
+            video.addEventListener('loadeddata', predictWebcam);
+          });
+        }
+      }
+
+      if (getUserMediaSupported()) {
+        enableCam()
+      } else {
+        console.warn('getUserMedia() is not supported by your browser');
+      }
+
+
       let lCtx = leftCapCanvas.getContext('2d');
       let rCtx = rightCapCanvas.getContext('2d');
 
       // Trigger photo take
       document.getElementById("snap-left").addEventListener("click", function () {
-        console.log("pleayOut", pleayOut)
         lCtx.drawImage(video, 0, 0, 224, 168);
       });
 
