@@ -3,15 +3,25 @@
 
 <head>
   <title>NASIT demo</title>
+
+  <!-- p5js -->
   <script src="vendor/js/p5.min.js" type="text/javascript"></script>
   <script src="vendor/js/p5.play.js" type="text/javascript"></script>
+
+  <!-- bootstrap -->
   <script src="vendor/js/bootstrap.bundle.min.js" type="text/javascript"></script>
 
+  <!-- tfjs -->
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@2.0.0/dist/tf.min.js"></script>
+
+  <!-- bootstrap -->
   <link rel="stylesheet" type="text/css" href="vendor/css/bootstrap.min.css">
   <link rel="stylesheet" type="text/css" href="vendor/css/bootstrap-grid.min.css">
   <link rel="stylesheet" type="text/css" href="vendor/css/bootstrap-grid.rtl.min.css">
   <link rel="stylesheet" type="text/css" href="vendor/css/bootstrap-utilities.min.css">
   <link rel="stylesheet" type="text/css" href="vendor/css/bootstrap-reboot.min.css">
+
+  <!-- custom css -->
   <link rel="stylesheet" type="text/css" href="style.css">
   <meta charset="utf-8">
 </head>
@@ -57,6 +67,8 @@
       const leftCapCanvas = document.getElementById('left-capture-canvas')
       const rightCapCanvas = document.getElementById('right-capture-canvas')
 
+      let pleayOut;
+
       // Get access to the camera!
       if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
         // Not adding `{ audio: true }` since we only want video now
@@ -65,7 +77,7 @@
         navigator.mediaDevices.getUserMedia({ video: true }).then(function (stream) {
           //video.src = window.URL.createObjectURL(stream);
           video.srcObject = stream;
-          video.play();
+          pleayOut = video.play();
         });
       }
       let lCtx = leftCapCanvas.getContext('2d');
@@ -73,6 +85,7 @@
 
       // Trigger photo take
       document.getElementById("snap-left").addEventListener("click", function () {
+        console.log("pleayOut", pleayOut)
         lCtx.drawImage(video, 0, 0, 224, 168);
       });
 
