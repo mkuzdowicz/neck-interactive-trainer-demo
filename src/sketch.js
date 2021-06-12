@@ -8,7 +8,7 @@ function getHeight() {
 
 function setup() {
   console.log('setup p5js sketch')
-  var sketchCanvas = createCanvas(900, 900);
+  var sketchCanvas = createCanvas(900, 400);
   sketchCanvas.parent("main-canvas");
 
   // init ball
