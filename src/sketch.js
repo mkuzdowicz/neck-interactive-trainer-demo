@@ -9,7 +9,7 @@ function getHeight() {
 function setup() {
   console.log('setup p5js sketch')
   var sketchCanvas = createCanvas(900, 900);
-  sketchCanvas.parent("nasit-canvas");
+  sketchCanvas.parent("main-canvas");
 
   // init ball
   x = width / 2;
