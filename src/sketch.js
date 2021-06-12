@@ -6,7 +6,8 @@ function getHeight() {
   return height - 25
 }
 
-function setup() {
+// needs to be defined in window for bundler
+window.setup = () => {
   console.log('setup p5js sketch')
   var sketchCanvas = createCanvas(900, 400);
   sketchCanvas.parent("main-canvas");
@@ -18,7 +19,8 @@ function setup() {
   state = "stop"
 }
 
-function draw() {
+// needs to be defined in window for bundler
+window.draw = () => {
   // background
   noStroke();
   background(102, 178, 255);
