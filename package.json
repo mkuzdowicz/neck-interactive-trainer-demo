@@ -8,7 +8,7 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "NODE_ENV=development parcel src/index.html --no-hmr --port 8080"
+    "start": "parcel src/index.html"
   },
   "author": "Marcin Kuzdowicz",
   "license": "ISC",
