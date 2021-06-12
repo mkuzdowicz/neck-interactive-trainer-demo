@@ -13,7 +13,6 @@ using tensorflow.js and p5.js
 ### running locally dev server
 
 ```shel
-npm install watch-http-server -g
 npm install
-npm run open
+npm run start
 ```
