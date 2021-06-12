@@ -27,8 +27,61 @@
     <div class="d-flex align-items-center justify-content-center">
       <div id="main-canvas"></div>
     </div>
-    <button type="button" class="btn btn-secondary">calibrate</button>
-    <button type="button" class="btn btn-danger" onclick="window.gameStateInit()">play</button>
+    <button id="train" type="button" class="btn btn-secondary">
+      train camera
+    </button>
+    <button id="predict" type="button" class="btn btn-danger" onclick="window.gameStateInit()">
+      play
+    </button>
+    <div class="d-flex align-items-center justify-content-center">
+      <div class="webcam-box">
+        <video autoplay playsinline muted id="video" width="224" height="224"></video>
+      </div>
+    </div>
+
+    <div class="controller text-center">
+      <button class="btn btn-danger" id="snap-left">Capture left</button>
+      <button class="btn btn-danger" id="snap-right">Capture right</button>
+    </div>
+  </br>
+    <div class="controller d-flex align-items-center justify-content-center">
+      <canvas id="left-capture-canvas" width="224" height="224"></canvas>
+      &nbsp&nbsp
+      <canvas id="right-capture-canvas" width="224" height="224"></canvas>
+    </div>
+
+    <script>
+      const video = document.getElementById('video')
+      const snapLeft = document.getElementById('snap-left')
+      const snapRight = document.getElementById('snap-right')
+      const leftCapCanvas = document.getElementById('left-capture-canvas')
+      const rightCapCanvas = document.getElementById('right-capture-canvas')
+
+      // Get access to the camera!
+      if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+        // Not adding `{ audio: true }` since we only want video now
+
+        console.log("navigator.mediaDevices", navigator.mediaDevices)
+        navigator.mediaDevices.getUserMedia({ video: true }).then(function (stream) {
+          //video.src = window.URL.createObjectURL(stream);
+          video.srcObject = stream;
+          video.play();
+        });
+      }
+      let lCtx = leftCapCanvas.getContext('2d');
+      let rCtx = rightCapCanvas.getContext('2d');
+
+      // Trigger photo take
+      document.getElementById("snap-left").addEventListener("click", function () {
+        lCtx.drawImage(video, 0, 0, 224, 168);
+      });
+
+      document.getElementById("snap-right").addEventListener("click", function () {
+        rCtx.drawImage(video, 0, 0, 224, 168);
+      });
+
+    </script>
+
     <footer>
       <p class="text-end">0xMkdev Studio</p>
     </footer>
