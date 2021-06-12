@@ -9,7 +9,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "parcel src/index.html",
-    "build": "parcel build src/index.html"
+    "build": "rm -rf build && parcel build src/index.html -d build"
   },
   "author": "Marcin Kuzdowicz",
   "license": "ISC",
