@@ -1,8 +1,11 @@
 
+const play = "play"
 const move = "move"
 const stop = "stop"
 
-window.gameState = stop
+window.gameStateInit = () => {
+    window.gameState = stop
+}
 
 window.gameStateMove = () => {
     window.gameState = move
