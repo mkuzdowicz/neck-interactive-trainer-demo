@@ -35,7 +35,7 @@
     </button>
     <div class="d-flex align-items-center justify-content-center">
       <div class="webcam-box">
-        <video autoplay playsinline muted id="video" width="224" height="224"></video>
+        <video class="webcam-stream" autoplay playsinline muted id="video" width="224" height="224"></video>
       </div>
     </div>
 
@@ -45,9 +45,9 @@
     </div>
   </br>
     <div class="controller d-flex align-items-center justify-content-center">
-      <canvas id="left-capture-canvas" width="224" height="224"></canvas>
+      <canvas class="webcam-stream" id="left-capture-canvas" width="224" height="224"></canvas>
       &nbsp&nbsp
-      <canvas id="right-capture-canvas" width="224" height="224"></canvas>
+      <canvas class="webcam-stream" id="right-capture-canvas" width="224" height="224"></canvas>
     </div>
 
     <script>

@@ -1,0 +1,4 @@
+.webcam-stream {
+    height: 160px;
+    transform: scaleX(-1);
+  }
