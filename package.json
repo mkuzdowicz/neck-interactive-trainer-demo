@@ -14,6 +14,7 @@
   "author": "Marcin Kuzdowicz",
   "license": "ISC",
   "dependencies": {
+    "@tensorflow-models/blazeface": "^0.0.7",
     "@tensorflow/tfjs": "^3.7.0",
     "parcel-bundler": "^1.12.5"
   },
