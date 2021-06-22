@@ -16,6 +16,10 @@
   "dependencies": {
     "@tensorflow-models/blazeface": "^0.0.7",
     "@tensorflow/tfjs": "^3.7.0",
+    "@tensorflow/tfjs-backend-wasm": "^3.7.0",
+    "@tensorflow/tfjs-backend-webgl": "^3.7.0",
+    "@tensorflow/tfjs-converter": "^3.7.0",
+    "@tensorflow/tfjs-core": "^3.7.0",
     "parcel-bundler": "^1.12.5"
   },
   "devDependencies": {

@@ -33,23 +33,19 @@
     <div class="d-flex align-items-center justify-content-center">
       <div id="main-canvas"></div>
     </div>
-    <button id="train" type="button" class="btn btn-secondary">
-      train camera
-    </button>
     <button id="predict" type="button" class="btn btn-danger" onclick="window.gameStateInit()">
       play
     </button>
     <div class="d-flex align-items-center justify-content-center">
       <div class="webcam-box">
-        <video class="webcam-stream" autoplay playsinline muted id="video" width="224" height="224"></video>
+        <video id="video" class="webcam-stream" 
+          autoplay 
+          playsinline 
+          muted>
+      </video>
       </div>
     </div>
-    </br>
-    <div class="controller d-flex align-items-center justify-content-center">
-      <canvas class="webcam-stream" id="left-capture-canvas" width="224" height="224"></canvas>
-      &nbsp&nbsp
-      <canvas class="webcam-stream" id="right-capture-canvas" width="224" height="224"></canvas>
-    </div>
+    <canvas id="video-output"></canvas>
     <script src="game-state.js"></script>
     <script src="user-input.js"></script>
     <script src="webcam.js"></script>
