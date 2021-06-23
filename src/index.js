@@ -30,15 +30,48 @@ const setupCamera= async () => {
     })
 }
 
+const calcAngle = (noseVec, videoWidth, videoHeight) => {
+    const p1 = {
+        x: noseVec[0],
+        y: noseVec[1]
+    }
+    const p2 = {
+        x: 0,
+        y: videoHeight
+    }
+
+    const p22 = {
+        x: 0,
+        y: videoHeight
+    }
+
+    var firstAngle = Math.atan2(p2.x, p2.y);
+    var secondAngle = Math.atan2(p1.x, p1.y);
+
+    
+    // angle in radians
+    // const angleRadians = Math.atan2(p2.y - p1.y, p2.x - p1.x);
+    var angleRadians = secondAngle - firstAngle;
+
+    // angle in degrees
+    const angleDeg = angleRadians * 180 / Math.PI;
+    return angleDeg
+}
+
 const renderPrediction = async () => {
     const returnTensors = false;
-    const flipHorizontal = true;
+    const flipHorizontal = false;
     const annotateBoxes = true;
     const predictions = await model.estimateFaces(
         video, returnTensors, flipHorizontal, annotateBoxes)
 
+    const videoWidth = video.videoWidth
+    const videoHeight = video.videoHeight
+
     if (predictions.length > 0) {
+        // draw video to canvas 
         ctx.clearRect(0, 0, canvas.width, canvas.height)
+        ctx.drawImage(video, 0, 0, videoWidth, videoHeight)
         /*
         `predictions` is an array of objects describing each detected face, for example:
     
@@ -58,9 +91,6 @@ const renderPrediction = async () => {
           }
         ]
         */
-
-        console.log('predictions', predictions)
-
         for (let i = 0; i < predictions.length; i++) {
             const start = predictions[i].topLeft;
             const end = predictions[i].bottomRight;
@@ -72,7 +102,32 @@ const renderPrediction = async () => {
 
             if (annotateBoxes) {
                 const landmarks = predictions[i].landmarks;
-        
+
+                const noseVec = landmarks[2]
+                const noseX = noseVec[0]
+                
+                const bottomVec = [noseX, videoHeight]
+                const bottomCorVec = [0, videoHeight]
+
+                const angle = calcAngle(noseVec, videoWidth, videoHeight)
+
+                if (angle < 40) {
+                    console.log('head right', angle)
+                    window.gameStateMove()
+                } else if (angle > 62) {
+                    console.log('head left', angle)
+                    window.gameStateMove()
+                } else {
+                    // console.log('angle', angle)
+                    window.gameStateStop()
+                }
+
+
+                // console.log('nose', noseVec)
+                // console.log('bottomVec', bottomVec)
+                // console.log('bottomCorVec', bottomCorVec)
+                // console.log('angle', angle)
+
                 ctx.fillStyle = "blue";
                 for (let j = 0; j < landmarks.length; j++) {
                   const x = landmarks[j][0];

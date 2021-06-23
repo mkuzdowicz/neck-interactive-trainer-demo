@@ -41,11 +41,13 @@
         <video id="video" class="webcam-stream" 
           autoplay 
           playsinline 
-          muted>
+          muted
+          style="display: none;"
+          >
       </video>
+      <canvas id="video-output"></canvas>
       </div>
     </div>
-    <canvas id="video-output"></canvas>
     <script src="game-state.js"></script>
     <script src="user-input.js"></script>
     <script src="webcam.js"></script>
