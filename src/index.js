@@ -125,19 +125,23 @@ const renderPrediction = async () => {
                 const lEarVec = landmarks[5]
                 const sz = (lEarVec[0] - rEarVec[0]) / 2
 
+                // circle around head
                 ctx.beginPath();
                 ctx.arc(noseVec[0], noseVec[1], size[0] / 2, 0, 2 * Math.PI, false);
                 ctx.fill()
                 ctx.stroke()
 
+                // path from nose to right eye
                 ctx.moveTo(noseVec[0], noseVec[1])
                 ctx.lineTo(rEarVec[0], rEarVec[1]);
                 ctx.stroke();
 
+                // path from nose to left eye
                 ctx.moveTo(noseVec[0], noseVec[1])
                 ctx.lineTo(lEarVec[0], lEarVec[1]);
                 ctx.stroke();
 
+                // path from nose to end
                 ctx.beginPath();
                 ctx.moveTo(noseVec[0], noseVec[1])
                 ctx.lineTo(0, videoHeight/2);
@@ -145,7 +149,7 @@ const renderPrediction = async () => {
 
                 ctx.beginPath();
                 ctx.moveTo(noseVec[0], noseVec[1])
-                ctx.lineTo(videoWidth/2, 0);
+                ctx.lineTo(videoWidth, videoHeight/2);
                 ctx.stroke();
 
                 const rDelta = noseVec[1] - rEarVec[1]
