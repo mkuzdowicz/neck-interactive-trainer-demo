@@ -30,48 +30,23 @@ const setupCamera = async () => {
     })
 }
 
-const calcAngle = (noseVec, videoWidth, videoHeight) => {
-    const p1 = {
-        x: noseVec[0],
-        y: noseVec[1]
-    }
-    const p2 = {
-        x: 0,
-        y: videoHeight
-    }
-
-    const p22 = {
-        x: 0,
-        y: videoHeight
-    }
-
-    const bottom = {
-        x: 0,
-        y: videoHeight
-    }
-
+const calcAngle = (noseVec, eyeVec) => {
     const nose = {
         x: noseVec[0],
         y: noseVec[1]
     }
+    const eye = {
+        x: eyeVec[0],
+        y: eyeVec[1]
+    }
 
-    const y = nose.y - bottom.y
-    const x = nose.x - bottom.x
+    const y = nose.y - eye.y
+    const x = nose.x - eye.x
 
     const ang = Math.atan2(y, x)
 
-    // var firstAngle = Math.atan2(p2.x, p2.y);
-    // var secondAngle = Math.atan2(p1.x, p1.y);
-
-
-    // // angle in radians
-    // // const angleRadians = Math.atan2(p2.y - p1.y, p2.x - p1.x);
-    // var angleRadians = secondAngle - firstAngle;
-
-    // // angle in degrees
-    // Math.atan2(8, 9)
     const angleDeg = ang * 180 / Math.PI;
-    return angleDeg * -1
+    return angleDeg
 }
 
 const renderPrediction = async () => {
@@ -149,21 +124,23 @@ const renderPrediction = async () => {
                 // path from nose to left end
                 ctx.beginPath();
                 ctx.moveTo(noseVec[0], noseVec[1])
-                ctx.lineTo(videoWidth, videoHeight/2);
+                ctx.lineTo(videoWidth, noseVec[1]);
                 ctx.stroke();
 
                 const rDelta = noseVec[1] - re[1]
                 const lDelta = noseVec[1] - le[1]
 
+                const leAngle = calcAngle(noseVec, le)
+                const reAngle = calcAngle(noseVec, re)
+
                 const scale = 8
                 if (lDelta < 0 + scale) {
-                    console.log('head left', angle)
+                    console.log('head left, leAngle', leAngle)
                     window.gameStateMove()
                 } else if (rDelta < 0 + scale) {
-                    console.log('head right', angle)
+                    console.log('head right, reAngle', reAngle)
                     window.gameStateMove()
                 } else {
-                    // console.log('angle', angle)
                     window.gameStateStop()
                 }
 
