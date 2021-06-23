@@ -108,7 +108,7 @@ const renderPrediction = async () => {
         ]
         */
         for (let i = 0; i < predictions.length; i++) {
-            console.log('predictions[i]', predictions[i])
+            // console.log('predictions[i]', predictions[i])
             const start = predictions[i].topLeft;
             const end = predictions[i].bottomRight;
             const size = [end[0] - start[0], end[1] - start[1]];
@@ -121,10 +121,9 @@ const renderPrediction = async () => {
                 const landmarks = predictions[i].landmarks;
 
                 const noseVec = landmarks[2]
-                const rEarVec = landmarks[4]
-                const lEarVec = landmarks[5]
-                const sz = (lEarVec[0] - rEarVec[0]) / 2
-
+                const le = landmarks[1]
+                const re = landmarks[0]
+                
                 // circle around head
                 ctx.beginPath();
                 ctx.arc(noseVec[0], noseVec[1], size[0] / 2, 0, 2 * Math.PI, false);
@@ -133,38 +132,28 @@ const renderPrediction = async () => {
 
                 // path from nose to right eye
                 ctx.moveTo(noseVec[0], noseVec[1])
-                ctx.lineTo(rEarVec[0], rEarVec[1]);
+                ctx.lineTo(re[0], re[1]);
                 ctx.stroke();
 
                 // path from nose to left eye
                 ctx.moveTo(noseVec[0], noseVec[1])
-                ctx.lineTo(lEarVec[0], lEarVec[1]);
+                ctx.lineTo(le[0], le[1]);
                 ctx.stroke();
 
-                // path from nose to end
+                // path from nose to right end
                 ctx.beginPath();
                 ctx.moveTo(noseVec[0], noseVec[1])
-                ctx.lineTo(0, videoHeight/2);
+                ctx.lineTo(0, noseVec[1]);
                 ctx.stroke();
 
+                // path from nose to left end
                 ctx.beginPath();
                 ctx.moveTo(noseVec[0], noseVec[1])
                 ctx.lineTo(videoWidth, videoHeight/2);
                 ctx.stroke();
 
-                const rDelta = noseVec[1] - rEarVec[1]
-                const lDelta = noseVec[1] - lEarVec[1]
-
-                console.log('rDelta', rDelta)
-
-                console.log('lDelta', lDelta)
-
-                const noseX = noseVec[0]
-
-                const bottomVec = [noseX, videoHeight]
-                const bottomCorVec = [0, videoHeight]
-
-                const angle = calcAngle(noseVec, videoWidth, videoHeight)
+                const rDelta = noseVec[1] - re[1]
+                const lDelta = noseVec[1] - le[1]
 
                 const scale = 8
                 if (lDelta < 0 + scale) {
@@ -177,11 +166,6 @@ const renderPrediction = async () => {
                     // console.log('angle', angle)
                     window.gameStateStop()
                 }
-
-                // console.log('nose', noseVec)
-                // console.log('bottomVec', bottomVec)
-                // console.log('bottomCorVec', bottomCorVec)
-                // console.log('angle', angle)
 
                 ctx.fillStyle = "blue";
                 for (let j = 0; j < landmarks.length; j++) {
