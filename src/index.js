@@ -4,6 +4,7 @@ import * as tf from '@tensorflow/tfjs-core';
 import * as tfjsWasm from '@tensorflow/tfjs-backend-wasm';
 import '@tensorflow/tfjs-backend-webgl';
 import '@tensorflow/tfjs-backend-cpu';
+import { eye } from '@tensorflow/tfjs-core';
 
 // TODO wasm is much faster investigate why
 // + vendor the dist
@@ -39,6 +40,8 @@ const calcAngle = (noseVec, eyeVec) => {
         x: eyeVec[0],
         y: eyeVec[1]
     }
+
+    console.log('calcAngle, nose, eye', nose, eye)
 
     const y = nose.y - eye.y
     const x = nose.x - eye.x
@@ -98,7 +101,7 @@ const renderPrediction = async () => {
                 const noseVec = landmarks[2]
                 const le = landmarks[1]
                 const re = landmarks[0]
-                
+
                 // circle around head
                 ctx.beginPath();
                 ctx.arc(noseVec[0], noseVec[1], size[0] / 2, 0, 2 * Math.PI, false);
@@ -127,18 +130,28 @@ const renderPrediction = async () => {
                 ctx.lineTo(videoWidth, noseVec[1]);
                 ctx.stroke();
 
-                const rDelta = noseVec[1] - re[1]
-                const lDelta = noseVec[1] - le[1]
+                const lx = le[0] - noseVec[0]
+                const ly = noseVec[1] - le[1]
+                const lAng = Math.atan2(ly, lx)
+                const langleDeg = lAng * 180 / Math.PI;
 
-                const leAngle = calcAngle(noseVec, le)
-                const reAngle = calcAngle(noseVec, re)
-
-                const scale = 8
-                if (lDelta < 0 + scale) {
-                    console.log('head left, leAngle', leAngle)
+                const rx = noseVec[0] - re[0]
+                const ry = noseVec[1] - re[1]
+                const rang = Math.atan2(ry, rx)
+                const rangleDeg = rang * 180 / Math.PI;
+                const activationAngle = 22
+                // const scale = 8
+                if (langleDeg < activationAngle) {
+                    // calcAngle, nose, eye 
+                    // {x: 373.8315010070801, y: 291.2296798825264} 
+                    // {x: 429.8914635181427, y: 283.5372243449092}
+                    console.log('head left, langleDeg', langleDeg)
                     window.gameStateMove()
-                } else if (rDelta < 0 + scale) {
-                    console.log('head right, reAngle', reAngle)
+                } else if (rangleDeg < activationAngle) {
+                    // calcAngle, nose, eye 
+                    // {x: 246.70952200889587, y: 307.50862419605255} 
+                    // {x: 194.9433994293213, y: 300.3187358379364}
+                    console.log('head right, reAngle', rangleDeg)
                     window.gameStateMove()
                 } else {
                     window.gameStateStop()
