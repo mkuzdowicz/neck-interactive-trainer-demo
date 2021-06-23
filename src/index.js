@@ -139,7 +139,7 @@ const renderPrediction = async () => {
                 const ry = noseVec[1] - re[1]
                 const rang = Math.atan2(ry, rx)
                 const rangleDeg = rang * 180 / Math.PI;
-                const activationAngle = 22
+                const activationAngle = 35
                 // const scale = 8
                 if (langleDeg < activationAngle) {
                     // calcAngle, nose, eye 
