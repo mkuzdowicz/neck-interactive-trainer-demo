@@ -23,35 +23,23 @@
 </head>
 
 <body>
-  <div class="container">
-    </br>
-    <h1 class="text-center">NASIT demo</h1>
-    <p class="text-center">Neck and Sholders interactive trainer</p>
-    <h5 class="text-center">#TouchLess and #GestureBase App</h5>
-    </br>
-    </br>
-    <div class="d-flex align-items-center justify-content-center">
-      <div id="main-canvas"></div>
-    </div>
-    <div class="d-flex align-items-center justify-content-center">
-      <div class="webcam-box">
-        <video id="video" class="webcam-stream" 
-          autoplay 
-          playsinline 
-          muted
-          style="display: none;"
-          >
-      </video>
+  <header>
+    <h1 class="text-center">NIT demo</h1>
+    <p class="text-center">Neck interactive trainer</p>
+  </header>
+  <div id="main-canvas"></div>
+  <div class="d-flex align-items-center justify-content-center">
+    <div class="webcam-box">
+      <video id="video" autoplay playsinline muted style="display: none;"></video>
       <canvas id="video-output"></canvas>
-      </div>
     </div>
-    <script src="game-state.js"></script>
-    <script src="sketch.js"></script>
-    <script src="index.js"></script>
-    <footer>
-      <p class="text-end">0xMkdev Studio</p>
-    </footer>
   </div>
+  <script src="game-state.js"></script>
+  <script src="sketch.js"></script>
+  <script src="index.js"></script>
+  <footer>
+    <p class="text-end">0xMkdev Studio</p>
+  </footer>
 </body>
 
 </html>

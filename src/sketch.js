@@ -9,7 +9,7 @@ function getHeight() {
 // needs to be defined in window for bundler
 window.setup = () => {
   console.log('setup p5js sketch')
-  var sketchCanvas = createCanvas(900, 400);
+  var sketchCanvas = createCanvas(window.innerWidth, window.innerHeight-90);
   sketchCanvas.parent("main-canvas");
 
   // init ball
