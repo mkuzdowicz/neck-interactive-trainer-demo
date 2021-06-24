@@ -26,13 +26,13 @@ window.draw = () => {
   background(102, 178, 255);
 
   // ladder
-  fill(127, 0, 255);
+  fill(0,153,0);
   rect((width / 2) - 25, 0, 60, 900);
 
   if (window.gameState) {
     // ball
     stroke(50);
-    fill(0, 153, 0);
+    fill(228,26,74);
     ellipse(x, y, 35, 35);
 
     // TODO investigate jiggling
