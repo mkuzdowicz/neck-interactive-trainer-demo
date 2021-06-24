@@ -1,7 +1,5 @@
 .webcam-stream {
     transform: scaleX(-1);
-    width: auto;
-    height: auto;
 }
 
 #video-output {
@@ -16,4 +14,12 @@
 header {
   height: 90px;
   padding: 5px;
+}
+
+.topright {
+  position: absolute;
+  bottom: 0px;
+  right: 0px;
+  width: 25%;
+  height: auto;
 }

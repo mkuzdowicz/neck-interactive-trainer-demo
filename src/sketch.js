@@ -1,6 +1,6 @@
 
 let x, y;
-let speed = 2
+let speed = 1.2
 
 function getHeight() {
   return height - 25

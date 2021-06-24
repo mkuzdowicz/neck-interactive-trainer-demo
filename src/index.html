@@ -19,7 +19,7 @@
 
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>NASIT demo</title>
+  <title>NIT demo</title>
 </head>
 
 <body>
@@ -28,18 +28,11 @@
     <p class="text-center">Neck interactive trainer</p>
   </header>
   <div id="main-canvas"></div>
-  <div class="d-flex align-items-center justify-content-center">
-    <div class="webcam-box">
-      <video id="video" autoplay playsinline muted style="display: none;"></video>
-      <canvas id="video-output"></canvas>
-    </div>
-  </div>
+  <video id="video" autoplay playsinline muted style="display: none;"></video>
+  <canvas id="video-output" class="topright"></canvas>
   <script src="game-state.js"></script>
   <script src="sketch.js"></script>
   <script src="index.js"></script>
-  <footer>
-    <p class="text-end">0xMkdev Studio</p>
-  </footer>
 </body>
 
 </html>
