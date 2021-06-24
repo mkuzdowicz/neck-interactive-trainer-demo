@@ -64,7 +64,6 @@ const renderPrediction = async () => {
 
     if (predictions.length > 0) {
         // draw video to canvas 
-        // ctx.clearRect(0, 0, canvas.width, canvas.height)
         ctx.drawImage(video, 0, 0, videoWidth, videoHeight)
         /*
         `predictions` is an array of objects describing each detected face, for example:
@@ -86,14 +85,10 @@ const renderPrediction = async () => {
         ]
         */
         for (let i = 0; i < predictions.length; i++) {
-            // console.log('predictions[i]', predictions[i])
             const start = predictions[i].topLeft;
             const end = predictions[i].bottomRight;
             const size = [end[0] - start[0], end[1] - start[1]];
             ctx.fillStyle = "rgba(255, 0, 0, 0.5)";
-
-            // Render a rectangle over each detected face.
-            // ctx.fillRect(start[0], start[1], size[0], size[1]);
 
             if (annotateBoxes) {
                 const landmarks = predictions[i].landmarks;
@@ -140,14 +135,15 @@ const renderPrediction = async () => {
                 const rang = Math.atan2(ry, rx)
                 const rangleDeg = rang * 180 / Math.PI;
                 const activationAngle = 25
-                // const scale = 8
                 if (langleDeg < activationAngle) {
+                    ctx.fillStyle = "yellow";
                     // calcAngle, nose, eye 
                     // {x: 373.8315010070801, y: 291.2296798825264} 
                     // {x: 429.8914635181427, y: 283.5372243449092}
                     console.log('head left, langleDeg', langleDeg)
                     window.gameStateMove()
                 } else if (rangleDeg < activationAngle) {
+                    ctx.fillStyle = "yellow";
                     // calcAngle, nose, eye 
                     // {x: 246.70952200889587, y: 307.50862419605255} 
                     // {x: 194.9433994293213, y: 300.3187358379364}
@@ -155,9 +151,10 @@ const renderPrediction = async () => {
                     window.gameStateMove()
                 } else {
                     window.gameStateStop()
+                    ctx.fillStyle = "blue";
                 }
 
-                ctx.fillStyle = "blue";
+                // draw face landmarks
                 for (let j = 0; j < landmarks.length; j++) {
                     const x = landmarks[j][0];
                     const y = landmarks[j][1];
