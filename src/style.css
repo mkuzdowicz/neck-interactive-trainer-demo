@@ -4,6 +4,7 @@
 
 #video-output {
   transform: scaleX(-1);
+  border: 5px solid rgb(114, 107, 107);
 }
 
 #main-canvas {
@@ -16,7 +17,7 @@ header {
   padding: 5px;
 }
 
-.topright {
+.bottom-right {
   position: absolute;
   bottom: 0px;
   right: 0px;
