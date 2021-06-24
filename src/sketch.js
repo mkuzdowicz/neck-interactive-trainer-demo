@@ -27,7 +27,7 @@ window.draw = () => {
 
   // ladder
   fill(0,153,0);
-  rect((width / 2) - 25, 0, 60, 900);
+  rect((width / 2) - 25, 0, 60, window.innerHeight-90);
 
   if (window.gameState) {
     // ball
