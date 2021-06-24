@@ -2,7 +2,7 @@
     transform: scaleX(-1);
     width: auto;
     height: auto;
-  }
+}
 
 #video-output {
   transform: scaleX(-1);
