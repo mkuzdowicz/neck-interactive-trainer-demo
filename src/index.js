@@ -30,6 +30,22 @@ const setupCamera = async () => {
     })
 }
 
+const getAnglesBetween = (nose, leftEye, rightEye) => {
+    // calculate angles between 
+    // - line from nose to eye 
+    // - and straigh line from end to end crossing nose
+    // for left and right
+    const calcAngle = (y, x) => {
+        return Math.atan2(y, x) * 180 / Math.PI
+    }
+    const leftX = leftEye[0] - nose[0]
+    const leftY = nose[1] - leftEye[1]
+    const rightX = nose[0] - rightEye[0]
+    const rightY = nose[1] - rightEye[1]
+    // noseToLeftEyeAngle, noseToRightEyeAngle
+    return [calcAngle(leftY, leftX), calcAngle(rightY, rightX)]
+}
+
 const renderPrediction = async () => {
     const returnTensors = false;
     const flipHorizontal = false;
@@ -71,13 +87,13 @@ const renderPrediction = async () => {
         if (annotateBoxes) {
             const landmarks = prediction.landmarks;
 
-            const noseVec = landmarks[2]
+            const nose = landmarks[2]
             const leftEye = landmarks[1]
             const rightEye = landmarks[0]
 
             const drawCircleAroundHead = () => {
                 ctx.beginPath();
-                ctx.arc(noseVec[0], noseVec[1], size[0] / 2, 0,
+                ctx.arc(nose[0], nose[1], size[0] / 2, 0,
                     2 * Math.PI, false);
                 ctx.fill()
                 ctx.stroke()
@@ -92,39 +108,25 @@ const renderPrediction = async () => {
             }
 
             // path from nose to right eye
-            drawLine(noseVec, rightEye)
+            drawLine(nose, rightEye)
 
             // path from nose to left eye
-            drawLine(noseVec, leftEye)
+            drawLine(nose, leftEye)
 
             // path from nose to right end
-            drawLine(noseVec, [0, noseVec[1]])
+            drawLine(nose, [0, nose[1]])
 
             // path from nose to left end
-            drawLine(noseVec, [videoWidth, noseVec[1]])
+            drawLine(nose, [videoWidth, nose[1]])
 
-            const getAngles = () => {
-                // calculate angles between 
-                // - line from nose to eye 
-                // - and straigh line from end to end crossing nose
-                // for left and right
-                const calcAngle = (y, x) => {
-                    return Math.atan2(y, x) * 180 / Math.PI
-                }
-                const leftX = leftEye[0] - noseVec[0]
-                const leftY = noseVec[1] - leftEye[1]
-                const rightX = noseVec[0] - rightEye[0]
-                const rightY = noseVec[1] - rightEye[1]
-                return [calcAngle(leftY, leftX), calcAngle(rightY, rightX)]
-            }
-            const angles = getAngles()
-            const leftAngle = angles[0]
-            const rightAngle = angles[1]
+            const angles = getAnglesBetween(nose, leftEye, rightEye)
+            const noseToLeftEyeAngle = angles[0]
+            const noseToRightEyeAngle = angles[1]
 
             const activationAngle = 25
 
-            if (leftAngle < activationAngle
-                || rightAngle < activationAngle) {
+            if (noseToLeftEyeAngle < activationAngle
+                || noseToRightEyeAngle < activationAngle) {
                 ctx.fillStyle = "yellow";
                 window.gameStateMove()
             } else {
