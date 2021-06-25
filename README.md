@@ -1,8 +1,6 @@
-# NASIT demo
+# neck interactive trainer DEMO
 
-Neck and Shoulders interactive trainer DEMO
-
-Optimal for people spending lots of time in front of computer
+Optimal for people spending lots of time in front of the computer
 
 #TouchLess and #GestureBase app
 
@@ -12,12 +10,12 @@ using tensorflow.js and p5.js
 
 ## the why
 
-I as a idnividual, I struggle to do excersize
+As a idnividual, I struggle to do excersize
 because it's not exciting enough for me
 
 That is why i want to gemify it
 
-### running locally dev server
+### running locally
 
 ```shel
 npm install
