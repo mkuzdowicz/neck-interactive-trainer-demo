@@ -84,82 +84,81 @@ const renderPrediction = async () => {
           }
         ]
         */
-        for (let i = 0; i < predictions.length; i++) {
-            const start = predictions[i].topLeft;
-            const end = predictions[i].bottomRight;
-            const size = [end[0] - start[0], end[1] - start[1]];
-            ctx.fillStyle = "rgba(255, 0, 0, 0.5)";
+        const prediction = predictions[0]
+        const start = prediction.topLeft;
+        const end = prediction.bottomRight;
+        const size = [end[0] - start[0], end[1] - start[1]];
+        ctx.fillStyle = "rgba(255, 0, 0, 0.5)";
 
-            if (annotateBoxes) {
-                const landmarks = predictions[i].landmarks;
+        if (annotateBoxes) {
+            const landmarks = prediction.landmarks;
 
-                const noseVec = landmarks[2]
-                const le = landmarks[1]
-                const re = landmarks[0]
+            const noseVec = landmarks[2]
+            const le = landmarks[1]
+            const re = landmarks[0]
 
-                // circle around head
-                ctx.beginPath();
-                ctx.arc(noseVec[0], noseVec[1], size[0] / 2, 0, 2 * Math.PI, false);
-                ctx.fill()
-                ctx.stroke()
+            // circle around head
+            ctx.beginPath();
+            ctx.arc(noseVec[0], noseVec[1], size[0] / 2, 0, 2 * Math.PI, false);
+            ctx.fill()
+            ctx.stroke()
 
-                // path from nose to right eye
-                ctx.moveTo(noseVec[0], noseVec[1])
-                ctx.lineTo(re[0], re[1]);
-                ctx.stroke();
+            // path from nose to right eye
+            ctx.moveTo(noseVec[0], noseVec[1])
+            ctx.lineTo(re[0], re[1]);
+            ctx.stroke();
 
-                // path from nose to left eye
-                ctx.moveTo(noseVec[0], noseVec[1])
-                ctx.lineTo(le[0], le[1]);
-                ctx.stroke();
+            // path from nose to left eye
+            ctx.moveTo(noseVec[0], noseVec[1])
+            ctx.lineTo(le[0], le[1]);
+            ctx.stroke();
 
-                // path from nose to right end
-                ctx.beginPath();
-                ctx.moveTo(noseVec[0], noseVec[1])
-                ctx.lineTo(0, noseVec[1]);
-                ctx.stroke();
+            // path from nose to right end
+            ctx.beginPath();
+            ctx.moveTo(noseVec[0], noseVec[1])
+            ctx.lineTo(0, noseVec[1]);
+            ctx.stroke();
 
-                // path from nose to left end
-                ctx.beginPath();
-                ctx.moveTo(noseVec[0], noseVec[1])
-                ctx.lineTo(videoWidth, noseVec[1]);
-                ctx.stroke();
+            // path from nose to left end
+            ctx.beginPath();
+            ctx.moveTo(noseVec[0], noseVec[1])
+            ctx.lineTo(videoWidth, noseVec[1]);
+            ctx.stroke();
 
-                const lx = le[0] - noseVec[0]
-                const ly = noseVec[1] - le[1]
-                const lAng = Math.atan2(ly, lx)
-                const langleDeg = lAng * 180 / Math.PI;
+            const lx = le[0] - noseVec[0]
+            const ly = noseVec[1] - le[1]
+            const lAng = Math.atan2(ly, lx)
+            const langleDeg = lAng * 180 / Math.PI;
 
-                const rx = noseVec[0] - re[0]
-                const ry = noseVec[1] - re[1]
-                const rang = Math.atan2(ry, rx)
-                const rangleDeg = rang * 180 / Math.PI;
-                const activationAngle = 25
-                if (langleDeg < activationAngle) {
-                    ctx.fillStyle = "yellow";
-                    // calcAngle, nose, eye 
-                    // {x: 373.8315010070801, y: 291.2296798825264} 
-                    // {x: 429.8914635181427, y: 283.5372243449092}
-                    console.log('head left, langleDeg', langleDeg)
-                    window.gameStateMove()
-                } else if (rangleDeg < activationAngle) {
-                    ctx.fillStyle = "yellow";
-                    // calcAngle, nose, eye 
-                    // {x: 246.70952200889587, y: 307.50862419605255} 
-                    // {x: 194.9433994293213, y: 300.3187358379364}
-                    console.log('head right, reAngle', rangleDeg)
-                    window.gameStateMove()
-                } else {
-                    window.gameStateStop()
-                    ctx.fillStyle = "blue";
-                }
+            const rx = noseVec[0] - re[0]
+            const ry = noseVec[1] - re[1]
+            const rang = Math.atan2(ry, rx)
+            const rangleDeg = rang * 180 / Math.PI;
+            const activationAngle = 25
+            if (langleDeg < activationAngle) {
+                ctx.fillStyle = "yellow";
+                // calcAngle, nose, eye 
+                // {x: 373.8315010070801, y: 291.2296798825264} 
+                // {x: 429.8914635181427, y: 283.5372243449092}
+                console.log('head left, langleDeg', langleDeg)
+                window.gameStateMove()
+            } else if (rangleDeg < activationAngle) {
+                ctx.fillStyle = "yellow";
+                // calcAngle, nose, eye 
+                // {x: 246.70952200889587, y: 307.50862419605255} 
+                // {x: 194.9433994293213, y: 300.3187358379364}
+                console.log('head right, reAngle', rangleDeg)
+                window.gameStateMove()
+            } else {
+                window.gameStateStop()
+                ctx.fillStyle = "blue";
+            }
 
-                // draw face landmarks
-                for (let j = 0; j < landmarks.length; j++) {
-                    const x = landmarks[j][0];
-                    const y = landmarks[j][1];
-                    ctx.fillRect(x, y, 5, 5);
-                }
+            // draw face landmarks
+            for (let j = 0; j < landmarks.length; j++) {
+                const x = landmarks[j][0];
+                const y = landmarks[j][1];
+                ctx.fillRect(x, y, 5, 5);
             }
         }
     }
