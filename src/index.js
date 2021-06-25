@@ -41,8 +41,6 @@ const calcAngle = (noseVec, eyeVec) => {
         y: eyeVec[1]
     }
 
-    console.log('calcAngle, nose, eye', nose, eye)
-
     const y = nose.y - eye.y
     const x = nose.x - eye.x
 
@@ -140,14 +138,12 @@ const renderPrediction = async () => {
                 // calcAngle, nose, eye 
                 // {x: 373.8315010070801, y: 291.2296798825264} 
                 // {x: 429.8914635181427, y: 283.5372243449092}
-                console.log('head left, langleDeg', langleDeg)
                 window.gameStateMove()
             } else if (rangleDeg < activationAngle) {
                 ctx.fillStyle = "yellow";
                 // calcAngle, nose, eye 
                 // {x: 246.70952200889587, y: 307.50862419605255} 
                 // {x: 194.9433994293213, y: 300.3187358379364}
-                console.log('head right, reAngle', rangleDeg)
                 window.gameStateMove()
             } else {
                 window.gameStateStop()
@@ -182,8 +178,6 @@ const setupPage = async () => {
     ctx.fillStyle = "rgba(255, 0, 0, 0.5)"
 
     model = await blazeface.load()
-
-    console.log('model', model)
 
     renderPrediction()
 }
