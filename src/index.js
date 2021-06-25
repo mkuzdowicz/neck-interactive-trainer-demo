@@ -95,33 +95,32 @@ const renderPrediction = async () => {
             const le = landmarks[1]
             const re = landmarks[0]
 
-            // circle around head
-            ctx.beginPath();
-            ctx.arc(noseVec[0], noseVec[1], size[0] / 2, 0, 2 * Math.PI, false);
-            ctx.fill()
-            ctx.stroke()
+            const drawCircleAroundHead = () => {
+                ctx.beginPath();
+                ctx.arc(noseVec[0], noseVec[1], size[0] / 2, 0, 2 * Math.PI, false);
+                ctx.fill()
+                ctx.stroke()
+            }
+
+            drawCircleAroundHead()
+
+            const drawLine = (p1, p2) => {
+                ctx.moveTo(p1[0], p1[1])
+                ctx.lineTo(p2[0], p2[1]);
+                ctx.stroke();
+            }
 
             // path from nose to right eye
-            ctx.moveTo(noseVec[0], noseVec[1])
-            ctx.lineTo(re[0], re[1]);
-            ctx.stroke();
+            drawLine(noseVec, re)
 
             // path from nose to left eye
-            ctx.moveTo(noseVec[0], noseVec[1])
-            ctx.lineTo(le[0], le[1]);
-            ctx.stroke();
+            drawLine(noseVec, le)
 
             // path from nose to right end
-            ctx.beginPath();
-            ctx.moveTo(noseVec[0], noseVec[1])
-            ctx.lineTo(0, noseVec[1]);
-            ctx.stroke();
+            drawLine(noseVec, [0, noseVec[1]])
 
             // path from nose to left end
-            ctx.beginPath();
-            ctx.moveTo(noseVec[0], noseVec[1])
-            ctx.lineTo(videoWidth, noseVec[1]);
-            ctx.stroke();
+            drawLine(noseVec, [videoWidth, noseVec[1]])
 
             const lx = le[0] - noseVec[0]
             const ly = noseVec[1] - le[1]
