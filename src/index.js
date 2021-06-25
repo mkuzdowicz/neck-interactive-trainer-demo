@@ -122,27 +122,23 @@ const renderPrediction = async () => {
             // path from nose to left end
             drawLine(noseVec, [videoWidth, noseVec[1]])
 
+            // calculate angle between 
+            // - line from nose to eye 
+            // - and straigh line from end to end crossing nose
             const lx = le[0] - noseVec[0]
             const ly = noseVec[1] - le[1]
             const lAng = Math.atan2(ly, lx)
-            const langleDeg = lAng * 180 / Math.PI;
+            const leftAngleInDeg = lAng * 180 / Math.PI;
 
             const rx = noseVec[0] - re[0]
             const ry = noseVec[1] - re[1]
             const rang = Math.atan2(ry, rx)
-            const rangleDeg = rang * 180 / Math.PI;
+            const rightAngleInDeg = rang * 180 / Math.PI;
             const activationAngle = 25
-            if (langleDeg < activationAngle) {
+
+            if (leftAngleInDeg < activationAngle
+                || rightAngleInDeg < activationAngle) {
                 ctx.fillStyle = "yellow";
-                // calcAngle, nose, eye 
-                // {x: 373.8315010070801, y: 291.2296798825264} 
-                // {x: 429.8914635181427, y: 283.5372243449092}
-                window.gameStateMove()
-            } else if (rangleDeg < activationAngle) {
-                ctx.fillStyle = "yellow";
-                // calcAngle, nose, eye 
-                // {x: 246.70952200889587, y: 307.50862419605255} 
-                // {x: 194.9433994293213, y: 300.3187358379364}
                 window.gameStateMove()
             } else {
                 window.gameStateStop()
