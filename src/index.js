@@ -108,9 +108,8 @@ const renderPrediction = async () => {
             // - line from nose to eye 
             // - and straigh line from end to end crossing nose
             // for left and right
-            const angles = getAnglesBetween(nose, leftEye, rightEye)
-            const noseToLeftEyeAngle = angles[0]
-            const noseToRightEyeAngle = angles[1]
+            const [noseToLeftEyeAngle, noseToRightEyeAngle] =
+                getAnglesBetween(nose, leftEye, rightEye)
 
             const activationAngle = 25
 
