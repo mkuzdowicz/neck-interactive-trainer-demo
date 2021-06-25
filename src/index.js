@@ -4,6 +4,7 @@ import * as tf from '@tensorflow/tfjs-core';
 import * as tfjsWasm from '@tensorflow/tfjs-backend-wasm';
 import '@tensorflow/tfjs-backend-webgl';
 import '@tensorflow/tfjs-backend-cpu';
+import getAnglesBetween from './angles';
 
 // TODO wasm is much faster investigate why
 // + vendor the dist
@@ -28,22 +29,6 @@ const setupCamera = async () => {
             resolve(video)
         }
     })
-}
-
-const getAnglesBetween = (nose, leftEye, rightEye) => {
-    // calculate angles between 
-    // - line from nose to eye 
-    // - and straigh line from end to end crossing nose
-    // for left and right
-    const calcAngle = (y, x) => {
-        return Math.atan2(y, x) * 180 / Math.PI
-    }
-    const leftX = leftEye[0] - nose[0]
-    const leftY = nose[1] - leftEye[1]
-    const rightX = nose[0] - rightEye[0]
-    const rightY = nose[1] - rightEye[1]
-    // noseToLeftEyeAngle, noseToRightEyeAngle
-    return [calcAngle(leftY, leftX), calcAngle(rightY, rightX)]
 }
 
 const renderPrediction = async () => {
@@ -119,6 +104,10 @@ const renderPrediction = async () => {
             // path from nose to left end
             drawLine(nose, [videoWidth, nose[1]])
 
+            // calculate angles between 
+            // - line from nose to eye 
+            // - and straigh line from end to end crossing nose
+            // for left and right
             const angles = getAnglesBetween(nose, leftEye, rightEye)
             const noseToLeftEyeAngle = angles[0]
             const noseToRightEyeAngle = angles[1]
