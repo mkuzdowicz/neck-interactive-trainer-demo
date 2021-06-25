@@ -4,7 +4,6 @@ import * as tf from '@tensorflow/tfjs-core';
 import * as tfjsWasm from '@tensorflow/tfjs-backend-wasm';
 import '@tensorflow/tfjs-backend-webgl';
 import '@tensorflow/tfjs-backend-cpu';
-import { eye } from '@tensorflow/tfjs-core';
 
 // TODO wasm is much faster investigate why
 // + vendor the dist
@@ -31,23 +30,8 @@ const setupCamera = async () => {
     })
 }
 
-const calcAngle = (noseVec, eyeVec) => {
-    const nose = {
-        x: noseVec[0],
-        y: noseVec[1]
-    }
-    const eye = {
-        x: eyeVec[0],
-        y: eyeVec[1]
-    }
-
-    const y = nose.y - eye.y
-    const x = nose.x - eye.x
-
-    const ang = Math.atan2(y, x)
-
-    const angleDeg = ang * 180 / Math.PI;
-    return angleDeg
+const calcAngle = (y, x) => {
+    return Math.atan2(y, x) * 180 / Math.PI
 }
 
 const renderPrediction = async () => {
@@ -92,12 +76,13 @@ const renderPrediction = async () => {
             const landmarks = prediction.landmarks;
 
             const noseVec = landmarks[2]
-            const le = landmarks[1]
-            const re = landmarks[0]
+            const leftEye = landmarks[1]
+            const rightEye = landmarks[0]
 
             const drawCircleAroundHead = () => {
                 ctx.beginPath();
-                ctx.arc(noseVec[0], noseVec[1], size[0] / 2, 0, 2 * Math.PI, false);
+                ctx.arc(noseVec[0], noseVec[1], size[0] / 2, 0,
+                    2 * Math.PI, false);
                 ctx.fill()
                 ctx.stroke()
             }
@@ -111,10 +96,10 @@ const renderPrediction = async () => {
             }
 
             // path from nose to right eye
-            drawLine(noseVec, re)
+            drawLine(noseVec, rightEye)
 
             // path from nose to left eye
-            drawLine(noseVec, le)
+            drawLine(noseVec, leftEye)
 
             // path from nose to right end
             drawLine(noseVec, [0, noseVec[1]])
@@ -125,19 +110,17 @@ const renderPrediction = async () => {
             // calculate angle between 
             // - line from nose to eye 
             // - and straigh line from end to end crossing nose
-            const lx = le[0] - noseVec[0]
-            const ly = noseVec[1] - le[1]
-            const lAng = Math.atan2(ly, lx)
-            const leftAngleInDeg = lAng * 180 / Math.PI;
+            const leftX = leftEye[0] - noseVec[0]
+            const leftY = noseVec[1] - leftEye[1]
+            const leftAngle = calcAngle(leftY, leftX)
+            const rightX = noseVec[0] - rightEye[0]
+            const rightY = noseVec[1] - rightEye[1]
+            const rightAngle = calcAngle(rightY, rightX)
 
-            const rx = noseVec[0] - re[0]
-            const ry = noseVec[1] - re[1]
-            const rang = Math.atan2(ry, rx)
-            const rightAngleInDeg = rang * 180 / Math.PI;
             const activationAngle = 25
 
-            if (leftAngleInDeg < activationAngle
-                || rightAngleInDeg < activationAngle) {
+            if (leftAngle < activationAngle
+                || rightAngle < activationAngle) {
                 ctx.fillStyle = "yellow";
                 window.gameStateMove()
             } else {
