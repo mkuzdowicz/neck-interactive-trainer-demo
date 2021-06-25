@@ -1,52 +1,67 @@
+class Ball {
+  constructor(x, y) {
+    this.x = x
+    this.y = y
+    this.speed = 1.2
+  }
 
-let x, y;
-let speed = 1.2
+  draw() {
+    const r = 50
+    stroke(40);
+    fill(228, 26, 74);
+    ellipse(this.x, this.y, r, r);
+  }
+
+  moveUp() {
+    // Moving up at a constant speed
+    this.y -= this.speed
+    // Reset to the bottom
+    // if top was reached
+    if (this.y < 0) {
+      this.y = getHeight();
+    }
+  }
+}
 
 function getHeight() {
   return height - 25
 }
 
+function drawLadder() {
+  fill(0, 153, 0);
+  rect((width / 2) - 25, 0, 80, window.innerHeight - 90);
+}
+
+function drawBackground() {
+  noStroke();
+  background(102, 178, 255);
+}
+
+let ball
+
 // needs to be defined in window for bundler
 window.setup = () => {
   console.log('setup p5js sketch')
-  var sketchCanvas = createCanvas(window.innerWidth, window.innerHeight-90);
+  var sketchCanvas = createCanvas(window.innerWidth, window.innerHeight - 90);
   sketchCanvas.parent("main-canvas");
 
   // init ball
-  x = width / 2;
-  y = getHeight();
-
-  state = "stop"
+  let x = (width / 2) + 14;
+  let y = getHeight() - 9;
+  ball = new Ball(x, y)
 }
 
 // needs to be defined in window for bundler
 window.draw = () => {
-  // background
-  noStroke();
-  background(102, 178, 255);
+  drawBackground()
 
-  // ladder
-  fill(0,153,0);
-  rect((width / 2) - 25, 0, 60, window.innerHeight-90);
+  drawLadder()
 
   if (window.gameState) {
-    // ball
-    stroke(50);
-    fill(228,26,74);
-    ellipse(x, y, 35, 35);
-
-    // TODO investigate jiggling
-    // Jiggling randomly on the horizontal axis
-    // x = x + random(-1, 1);
+    ball.draw()
 
     if (window.gameStateIsInMove()) {
-      // Moving up at a constant speed
-      y -= speed;
-    }
-
-    // Reset to the bottom
-    if (y < 0) {
-      y = getHeight();
+      ball.moveUp()
     }
   }
 }

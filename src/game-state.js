@@ -18,3 +18,6 @@ window.gameStateStop = () => {
 window.gameStateIsInMove = () => {
     return window.gameState == move
 }
+
+window.gameStateInit()
+
