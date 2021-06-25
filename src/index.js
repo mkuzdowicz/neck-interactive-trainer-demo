@@ -30,10 +30,6 @@ const setupCamera = async () => {
     })
 }
 
-const calcAngle = (y, x) => {
-    return Math.atan2(y, x) * 180 / Math.PI
-}
-
 const renderPrediction = async () => {
     const returnTensors = false;
     const flipHorizontal = false;
@@ -107,15 +103,23 @@ const renderPrediction = async () => {
             // path from nose to left end
             drawLine(noseVec, [videoWidth, noseVec[1]])
 
-            // calculate angle between 
-            // - line from nose to eye 
-            // - and straigh line from end to end crossing nose
-            const leftX = leftEye[0] - noseVec[0]
-            const leftY = noseVec[1] - leftEye[1]
-            const leftAngle = calcAngle(leftY, leftX)
-            const rightX = noseVec[0] - rightEye[0]
-            const rightY = noseVec[1] - rightEye[1]
-            const rightAngle = calcAngle(rightY, rightX)
+            const getAngles = () => {
+                // calculate angles between 
+                // - line from nose to eye 
+                // - and straigh line from end to end crossing nose
+                // for left and right
+                const calcAngle = (y, x) => {
+                    return Math.atan2(y, x) * 180 / Math.PI
+                }
+                const leftX = leftEye[0] - noseVec[0]
+                const leftY = noseVec[1] - leftEye[1]
+                const rightX = noseVec[0] - rightEye[0]
+                const rightY = noseVec[1] - rightEye[1]
+                return [calcAngle(leftY, leftX), calcAngle(rightY, rightX)]
+            }
+            const angles = getAngles()
+            const leftAngle = angles[0]
+            const rightAngle = angles[1]
 
             const activationAngle = 25
 
