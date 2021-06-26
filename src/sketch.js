@@ -1,8 +1,12 @@
+import party from "party-js"
+
+const canvasParent = document.getElementById('main-canvas')
+
 class Ball {
   constructor(x, y) {
     this.x = x
     this.y = y
-    this.speed = 1.2
+    this.speed = 1.8
   }
 
   draw() {
@@ -18,6 +22,9 @@ class Ball {
     // Reset to the bottom
     // if top was reached
     if (this.y < 0) {
+      // trigger confetti
+      party.confetti(canvasParent)
+      // reset to beginning
       this.y = getHeight();
     }
   }
